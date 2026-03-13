@@ -825,12 +825,135 @@ const Logo = () => (
   </span>
 );
 
-export default function App() {
+const ShowcasePage = ({ onEnterApp }: { onEnterApp: () => void }) => (
+  <main className="max-w-4xl mx-auto px-6 py-20 space-y-24">
+    <section className="space-y-8 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="space-y-4"
+      >
+        <h2 className="font-serif text-6xl leading-tight font-medium text-[#2D2A26]">
+          The Future of <span className="italic text-[#5A5A40]">Social Reading</span>
+        </h2>
+        <p className="text-[#6B665F] text-xl max-w-2xl mx-auto leading-relaxed">
+          Bridging the gap between solitary reading and meaningful conversation.
+        </p>
+      </motion.div>
+      
+      <motion.button
+        onClick={onEnterApp}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="bg-[#5A5A40] text-white px-10 py-4 rounded-full font-bold text-lg shadow-xl shadow-[#5A5A40]/20"
+      >
+        Try the Interactive Prototype
+      </motion.button>
+    </section>
+
+    <div className="grid md:grid-cols-2 gap-12">
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        className="bg-white p-10 rounded-[3rem] border border-[#E8E4DE] shadow-sm space-y-6"
+      >
+        <div className="w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center">
+          <HelpCircle size={32} />
+        </div>
+        <h3 className="font-serif text-3xl font-bold text-[#2D2A26]">The Problem</h3>
+        <p className="text-[#6B665F] text-lg leading-relaxed">
+          Reading is often a deeply personal yet isolated experience. Traditional digital readers treat notes and highlights as secondary metadata, buried in sidebars or separate tabs. This disconnect makes it difficult to share spontaneous thoughts and reactions with friends in the context of the story.
+        </p>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        className="bg-[#F5F2ED] p-10 rounded-[3rem] border border-[#E8E4DE] shadow-sm space-y-6"
+      >
+        <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+          <Smile size={32} />
+        </div>
+        <h3 className="font-serif text-3xl font-bold text-[#2D2A26]">The Solution</h3>
+        <p className="text-[#6B665F] text-lg leading-relaxed">
+          BOOKD transforms the reading experience by bringing conversations directly into the sentences. By allowing users to leave "in-line" comments that appear exactly where they were inspired, we create a living, breathing community within the pages of every book.
+        </p>
+      </motion.div>
+    </div>
+
+    <section className="py-20 text-center space-y-12">
+      <h3 className="font-serif text-4xl font-bold text-[#2D2A26]">Key Innovations</h3>
+      <div className="grid md:grid-cols-3 gap-8">
+        {[
+          { title: "In-Sentence Chat", desc: "Thoughts live where they happen, not in a sidebar." },
+          { title: "Real-time Sync", desc: "See your book club's progress as they read." },
+          { title: "Tactile Design", desc: "A digital experience that feels like a physical book." }
+        ].map((item, i) => (
+          <div key={i} className="space-y-4">
+            <div className="text-[#5A5A40] font-serif text-5xl font-bold opacity-20">0{i+1}</div>
+            <h4 className="font-bold text-xl">{item.title}</h4>
+            <p className="text-[#6B665F]">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+);
+
+const ProcessPage = () => (
+  <main className="max-w-4xl mx-auto px-6 py-20 space-y-20">
+    <section className="space-y-6 text-center">
+      <h2 className="font-serif text-5xl font-bold text-[#2D2A26]">Peek into the Process</h2>
+      <p className="text-[#6B665F] text-xl">From sketches to a living prototype.</p>
+    </section>
+
+    <section className="grid md:grid-cols-2 gap-8">
+      {[
+        { title: "Ideation & Sketching", img: "https://picsum.photos/seed/sketch/800/600", desc: "We started with the core idea of 'messy' margins and tactile interactions." },
+        { title: "Visual Identity", img: "https://picsum.photos/seed/brand/800/600", desc: "Developing a palette that feels like aged paper and natural ink." },
+        { title: "Interaction Design", img: "https://picsum.photos/seed/ui/800/600", desc: "Mapping out how comments can coexist with text without being intrusive." },
+        { title: "Final Prototype", img: "https://picsum.photos/seed/app/800/600", desc: "Bringing it all together into a functional React application." }
+      ].map((item, i) => (
+        <motion.div 
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="space-y-4"
+        >
+          <div className="aspect-video rounded-[2rem] overflow-hidden border-4 border-[#2D2A26] shadow-[8px_8px_0px_0px_#2D2A26]">
+            <img src={item.img} alt={item.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+          </div>
+          <h3 className="font-serif text-2xl font-bold text-[#2D2A26]">{item.title}</h3>
+          <p className="text-[#6B665F]">{item.desc}</p>
+        </motion.div>
+      ))}
+    </section>
+
+    <section className="bg-[#2D2A26] text-white p-12 rounded-[3rem] space-y-8">
+      <h3 className="font-serif text-3xl font-bold text-center">The Team</h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        {["Tiffany Ashera", "Member Two", "Member Three", "Member Four"].map((name, i) => (
+          <div key={i} className="space-y-2">
+            <div className="w-16 h-16 bg-white/10 rounded-full mx-auto flex items-center justify-center">
+              <User size={32} />
+            </div>
+            <p className="font-medium">{name}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+);
+
+const BookApp = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [chatPartner, setChatPartner] = useState('sarah');
 
   return (
-    <div className="min-h-screen pb-24 bg-[#FDFCFB]">
+    <div className="min-h-[80vh] pb-24 bg-[#FDFCFB] rounded-[3rem] border-4 border-[#2D2A26] shadow-2xl overflow-hidden max-w-2xl mx-auto my-10 relative">
       {/* Header */}
       <header className={`px-6 py-8 flex items-center max-w-2xl mx-auto relative ${activeTab === 'chat' ? 'border-b-4 border-[#2D2A26] mb-4' : ''}`}>
         {(activeTab === 'book' || activeTab === 'chat' || activeTab === 'contents' || activeTab === 'account' || activeTab === 'add-books' || activeTab === 'help' || activeTab === 'comment-search' || activeTab === 'join-club' || activeTab === 'create-club') && (
@@ -912,7 +1035,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-[#E8E4DE] px-8 py-4 z-50">
+      <nav className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-[#E8E4DE] px-8 py-4 z-50">
         <div className="max-w-2xl mx-auto flex justify-between items-center">
           <NavItem 
             icon={Home} 
@@ -940,6 +1063,58 @@ export default function App() {
           />
         </div>
       </nav>
+    </div>
+  );
+};
+
+export default function App() {
+  const [mainView, setMainView] = useState<'showcase' | 'app' | 'process'>('showcase');
+
+  return (
+    <div className="min-h-screen bg-[#FDFCFB]">
+      {/* Top Navigation Bar */}
+      <nav className="bg-white border-b border-[#E8E4DE] sticky top-0 z-[100] px-6 py-4">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Logo />
+            <span className="font-serif text-xl font-bold text-[#2D2A26] ml-2 hidden sm:inline">SHOWCASE</span>
+          </div>
+          <div className="flex items-center space-x-8">
+            <button 
+              onClick={() => setMainView('showcase')}
+              className={`font-medium text-sm uppercase tracking-widest transition-colors ${mainView === 'showcase' ? 'text-[#5A5A40] border-b-2 border-[#5A5A40]' : 'text-[#8E8B82] hover:text-[#2D2A26]'}`}
+            >
+              Showcase
+            </button>
+            <button 
+              onClick={() => setMainView('app')}
+              className={`font-medium text-sm uppercase tracking-widest transition-colors ${mainView === 'app' ? 'text-[#5A5A40] border-b-2 border-[#5A5A40]' : 'text-[#8E8B82] hover:text-[#2D2A26]'}`}
+            >
+              Interactive App
+            </button>
+            <button 
+              onClick={() => setMainView('process')}
+              className={`font-medium text-sm uppercase tracking-widest transition-colors ${mainView === 'process' ? 'text-[#5A5A40] border-b-2 border-[#5A5A40]' : 'text-[#8E8B82] hover:text-[#2D2A26]'}`}
+            >
+              Process
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={mainView}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {mainView === 'showcase' && <ShowcasePage onEnterApp={() => setMainView('app')} />}
+          {mainView === 'app' && <BookApp />}
+          {mainView === 'process' && <ProcessPage />}
+        </motion.div>
+      </AnimatePresence>
 
       <style>{`
         .no-scrollbar::-webkit-scrollbar {
