@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, BookOpen, Users, User, MessageCircle, Library, ChevronRight, Bookmark, MessageSquare, Plus, UserPlus, Circle, Highlighter, Menu, Smile, ArrowLeft, Heart, Search, List, HelpCircle } from 'lucide-react';
+import { Home, BookOpen, Users, User, MessageCircle, Library, ChevronRight, Bookmark, MessageSquare, Plus, UserPlus, Circle, Highlighter, Menu, Smile, ArrowLeft, Heart, Search, List, HelpCircle, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const NavItem = ({ icon: Icon, label, active, onClick }: { icon: any, label: string, active: boolean, onClick: () => void }) => (
@@ -293,6 +293,8 @@ const BookshelfPage = ({ onContinue, onAdd }: { onContinue: () => void, onAdd: (
 
 const ReadingPage = () => {
   const [showComments, setShowComments] = useState(true);
+  const [showVisibilityPopup, setShowVisibilityPopup] = useState(false);
+  const [visibility, setVisibility] = useState('both'); // 'friends', 'bookclub', 'both'
 
   return (
     <main className="max-w-2xl mx-auto px-6 space-y-10 relative">
@@ -432,14 +434,60 @@ const ReadingPage = () => {
                 {/* Input Field */}
                 <div className="absolute bottom-6 left-6 right-6">
                   <div className="relative">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center">
+                      <button 
+                        onClick={() => setShowVisibilityPopup(!showVisibilityPopup)}
+                        className="p-1 hover:bg-[#E8E4DE] rounded-full transition-colors"
+                        title="Who can see this?"
+                      >
+                        <Users size={20} className="text-[#5A5A40]" />
+                      </button>
+                    </div>
                     <input 
                       type="text" 
                       placeholder="leave a comment"
-                      className="w-full bg-[#F5F2ED] border-2 border-[#2D2A26] rounded-full py-4 px-6 font-serif italic text-lg focus:outline-none shadow-[4px_4px_0px_0px_#2D2A26]"
+                      className="w-full bg-[#F5F2ED] border-2 border-[#2D2A26] rounded-full py-4 pl-14 pr-14 font-serif italic text-lg focus:outline-none shadow-[4px_4px_0px_0px_#2D2A26]"
                     />
                     <button className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#2D2A26] text-white rounded-full flex items-center justify-center">
                       <Plus className="rotate-45" size={20} />
                     </button>
+
+                    {/* Visibility Popup */}
+                    <AnimatePresence>
+                      {showVisibilityPopup && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          className="absolute bottom-full left-0 mb-4 bg-white border-2 border-[#2D2A26] rounded-2xl p-4 shadow-[6px_6px_0px_0px_#2D2A26] z-[80] min-w-[200px]"
+                        >
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-[#8E8B82] mb-3">Visible to:</p>
+                          <div className="space-y-2">
+                            {[
+                              { id: 'friends', label: 'Friends', icon: User },
+                              { id: 'bookclub', label: 'Bookclub Members', icon: Users },
+                              { id: 'both', label: 'Both', icon: Globe }
+                            ].map((option) => (
+                              <button
+                                key={option.id}
+                                onClick={() => {
+                                  setVisibility(option.id);
+                                  setShowVisibilityPopup(false);
+                                }}
+                                className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-colors ${
+                                  visibility === option.id ? 'bg-[#F5F2ED] border border-[#2D2A26]' : 'hover:bg-[#FDFCFB]'
+                                }`}
+                              >
+                                <option.icon size={16} className={visibility === option.id ? 'text-[#5A5A40]' : 'text-[#8E8B82]'} />
+                                <span className={`font-serif text-sm ${visibility === option.id ? 'font-bold text-[#2D2A26]' : 'text-[#6B665F]'}`}>
+                                  {option.label}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
@@ -837,7 +885,7 @@ const ShowcasePage = ({ onEnterApp }: { onEnterApp: () => void }) => (
           The Future of <span className="italic text-[#5A5A40]">Social Reading</span>
         </h2>
         <p className="text-[#6B665F] text-xl max-w-2xl mx-auto leading-relaxed">
-          Bridging the gap between solitary reading and meaningful conversation.
+          Read between the lines, together. The first reading app where your thoughts live inside the sentences. Join book clubs and share your journey in real-time.
         </p>
       </motion.div>
       
@@ -863,7 +911,7 @@ const ShowcasePage = ({ onEnterApp }: { onEnterApp: () => void }) => (
         </div>
         <h3 className="font-serif text-3xl font-bold text-[#2D2A26]">The Problem</h3>
         <p className="text-[#6B665F] text-lg leading-relaxed">
-          Reading is often a deeply personal yet isolated experience. Traditional digital readers treat notes and highlights as secondary metadata, buried in sidebars or separate tabs. This disconnect makes it difficult to share spontaneous thoughts and reactions with friends in the context of the story.
+          Reading is often a deeply personal yet isolated experience. Traditional book clubs require members to reach consensus on book choice, meet at the same time, and attend in person, which limits flexibility and participation. Furthermore, digital readers bury thoughts in sidebars, making it difficult to share spontaneous reactions in the context of the story.
         </p>
       </motion.div>
 
@@ -878,27 +926,11 @@ const ShowcasePage = ({ onEnterApp }: { onEnterApp: () => void }) => (
         </div>
         <h3 className="font-serif text-3xl font-bold text-[#2D2A26]">The Solution</h3>
         <p className="text-[#6B665F] text-lg leading-relaxed">
-          BOOKD transforms the reading experience by bringing conversations directly into the sentences. By allowing users to leave "in-line" comments that appear exactly where they were inspired, we create a living, breathing community within the pages of every book.
+          BOOK'D is a mobile application that allows users to select books, engage in line-by-line book discussions with friends, and find or join book clubs to meet new people. By bringing conversations directly into the sentences and allowing users to leave "in-line" comments exactly where they were inspired, we create a living, breathing community within the pages of every book.
         </p>
       </motion.div>
     </div>
 
-    <section className="py-20 text-center space-y-12">
-      <h3 className="font-serif text-4xl font-bold text-[#2D2A26]">Key Innovations</h3>
-      <div className="grid md:grid-cols-3 gap-8">
-        {[
-          { title: "In-Sentence Chat", desc: "Thoughts live where they happen, not in a sidebar." },
-          { title: "Real-time Sync", desc: "See your book club's progress as they read." },
-          { title: "Tactile Design", desc: "A digital experience that feels like a physical book." }
-        ].map((item, i) => (
-          <div key={i} className="space-y-4">
-            <div className="text-[#5A5A40] font-serif text-5xl font-bold opacity-20">0{i+1}</div>
-            <h4 className="font-bold text-xl">{item.title}</h4>
-            <p className="text-[#6B665F]">{item.desc}</p>
-          </div>
-        ))}
-      </div>
-    </section>
   </main>
 );
 
@@ -911,10 +943,14 @@ const ProcessPage = () => (
 
     <section className="grid md:grid-cols-2 gap-8">
       {[
-        { title: "Ideation & Sketching", img: "https://picsum.photos/seed/sketch/800/600", desc: "We started with the core idea of 'messy' margins and tactile interactions." },
-        { title: "Visual Identity", img: "https://picsum.photos/seed/brand/800/600", desc: "Developing a palette that feels like aged paper and natural ink." },
-        { title: "Interaction Design", img: "https://picsum.photos/seed/ui/800/600", desc: "Mapping out how comments can coexist with text without being intrusive." },
-        { title: "Final Prototype", img: "https://picsum.photos/seed/app/800/600", desc: "Bringing it all together into a functional React application." }
+        { 
+          title: "User Research Findings", 
+          img: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=800&h=600", 
+          desc: "93% of our user research group enjoy reading but 77% report having a busy schedule so they cannot allocate more time to read, let alone discuss. BOOK'D aims to remove that barrier by creating a space where you can discuss at your own time. Additionally, our interviewee participants strongly favored discussions with friends over strangers, leading us to include privacy features for comment visibility." 
+        },
+        { title: "Sketching Prototype", img: "https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?auto=format&fit=crop&q=80&w=800&h=600", desc: "Going through a users experience and emotions helped us understand what tasks are needed to tackle our problem in our prototype. This helped us shape our implementation of features and designs" },
+        { title: "Video Concept", img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&q=80&w=800&h=600", desc: "We created a video concept that showcases our idea and presents the outlines of our solution within context to an outside audience. Watch here: https://youtube.com/shorts/JbPyvCZnikY?feature=share" },
+        { title: "Paper Prototype", img: "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&q=80&w=800&h=600", desc: "Created low fidelity paper prototypes to initiate usability testing and heuristic evaluations. After many iterations, we concluded on this design." }
       ].map((item, i) => (
         <motion.div 
           key={i}
@@ -927,7 +963,21 @@ const ProcessPage = () => (
             <img src={item.img} alt={item.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           <h3 className="font-serif text-2xl font-bold text-[#2D2A26]">{item.title}</h3>
-          <p className="text-[#6B665F]">{item.desc}</p>
+          <p className="text-[#6B665F]">
+            {item.desc.includes('http') ? (
+              <>
+                {item.desc.split('https')[0]}
+                <a 
+                  href={`https${item.desc.split('https')[1]}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-[#5A5A40] underline hover:text-[#2D2A26] break-all"
+                >
+                  https{item.desc.split('https')[1]}
+                </a>
+              </>
+            ) : item.desc}
+          </p>
         </motion.div>
       ))}
     </section>
@@ -935,7 +985,7 @@ const ProcessPage = () => (
     <section className="bg-[#2D2A26] text-white p-12 rounded-[3rem] space-y-8">
       <h3 className="font-serif text-3xl font-bold text-center">The Team</h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        {["Tiffany Ashera", "Member Two", "Member Three", "Member Four"].map((name, i) => (
+        {["Tiffany Tang", "Emily Chi", "Yana Martynyuk", "Abyan Nour"].map((name, i) => (
           <div key={i} className="space-y-2">
             <div className="w-16 h-16 bg-white/10 rounded-full mx-auto flex items-center justify-center">
               <User size={32} />
