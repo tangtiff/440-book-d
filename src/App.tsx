@@ -948,9 +948,9 @@ const ProcessPage = () => (
           img: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=800&h=600", 
           desc: "93% of our user research group enjoy reading but 77% report having a busy schedule so they cannot allocate more time to read, let alone discuss. BOOK'D aims to remove that barrier by creating a space where you can discuss at your own time. Additionally, our interviewee participants strongly favored discussions with friends over strangers, leading us to include privacy features for comment visibility." 
         },
-        { title: "Sketching Prototype", img: "https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?auto=format&fit=crop&q=80&w=800&h=600", desc: "Going through a users experience and emotions helped us understand what tasks are needed to tackle our problem in our prototype. This helped us shape our implementation of features and designs" },
-        { title: "Video Concept", img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&q=80&w=800&h=600", desc: "We created a video concept that showcases our idea and presents the outlines of our solution within context to an outside audience. Watch here: https://youtube.com/shorts/JbPyvCZnikY?feature=share" },
-        { title: "Paper Prototype", img: "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&q=80&w=800&h=600", desc: "Created low fidelity paper prototypes to initiate usability testing and heuristic evaluations. After many iterations, we concluded on this design." }
+        { title: "Sketching Prototype", img: "/sketching.png", desc: "Going through a users experience and emotions helped us understand what tasks are needed to tackle our problem in our prototype. This helped us shape our implementation of features and designs" },
+        { title: "Video Concept", img: "/video.png", desc: "We created a video concept that showcases our idea and presents the outlines of our solution within context to an outside audience. Watch here: https://youtube.com/shorts/JbPyvCZnikY?feature=share" },
+        { title: "Paper Prototype", img: "/paper_prototype.png", desc: "Created low fidelity paper prototypes to initiate usability testing and heuristic evaluations. After many iterations, we concluded on this design." }
       ].map((item, i) => (
         <motion.div 
           key={i}
@@ -959,7 +959,7 @@ const ProcessPage = () => (
           viewport={{ once: true }}
           className="space-y-4"
         >
-          <div className="aspect-video rounded-[2rem] overflow-hidden border-4 border-[#2D2A26] shadow-[8px_8px_0px_0px_#2D2A26]">
+          <div className="w-full h-[500px] rounded-[2rem] overflow-hidden border-4 border-[#2D2A26] shadow-[8px_8px_0px_0px_#2D2A26]">
             <img src={item.img} alt={item.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           <h3 className="font-serif text-2xl font-bold text-[#2D2A26]">{item.title}</h3>
