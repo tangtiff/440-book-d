@@ -1117,8 +1117,50 @@ const BookApp = () => {
   );
 };
 
+const DemoPage = () => {
+  const [playVideo, setPlayVideo] = useState(false);
+
+  return (
+    <main className="max-w-4xl mx-auto px-6 py-20 space-y-16 text-center">
+
+      {/* Title */}
+      <h2 className="font-serif text-5xl font-bold text-[#2D2A26]">
+        Video About Our App!
+      </h2>
+
+      <div className="flex justify-center">
+        {!playVideo ? (
+          /* Clickable container */
+          <div
+            onClick={() => setPlayVideo(true)}
+            className="group cursor-pointer w-full max-w-3xl h-[500px] bg-[#F5F2ED] rounded-[2rem] border-4 border-[#2D2A26] shadow-[8px_8px_0px_0px_#2D2A26] flex flex-col items-center justify-center hover:scale-[1.02] transition-transform"
+          >
+            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <ChevronRight size={40} className="text-[#2D2A26]" />
+            </div>
+
+            <p className="mt-6 text-lg text-[#6B665F] font-medium">
+              Click to watch the demo
+            </p>
+          </div>
+        ) : (
+          /* Video player */
+          <video
+            controls
+            autoPlay
+            className="w-full max-w-3xl rounded-[2rem] border-4 border-[#2D2A26] shadow-[8px_8px_0px_0px_#2D2A26]"
+          >
+            <source src="/demo.mov" type="video/mp4" />
+          </video>
+        )}
+      </div>
+
+    </main>
+  );
+};
+
 export default function App() {
-  const [mainView, setMainView] = useState<'showcase' | 'app' | 'process'>('showcase');
+  const [mainView, setMainView] = useState<'showcase' | 'app' | 'process' | 'demo'>('showcase');
 
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
@@ -1148,6 +1190,16 @@ export default function App() {
             >
               Process
             </button>
+            <button 
+            onClick={() => setMainView('demo')}
+            className={`font-medium text-sm uppercase tracking-widest transition-colors ${
+              mainView === 'demo'
+                ? 'text-[#5A5A40] border-b-2 border-[#5A5A40]'
+                : 'text-[#8E8B82] hover:text-[#2D2A26]'
+            }`}
+          >
+            Demo
+          </button>
           </div>
         </div>
       </nav>
@@ -1163,6 +1215,7 @@ export default function App() {
           {mainView === 'showcase' && <ShowcasePage onEnterApp={() => setMainView('app')} />}
           {mainView === 'app' && <BookApp />}
           {mainView === 'process' && <ProcessPage />}
+          {mainView === 'demo' && <DemoPage />}
         </motion.div>
       </AnimatePresence>
 
